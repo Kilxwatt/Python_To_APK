@@ -1,0 +1,45 @@
+import React, { useState } from 'react';
+import { Document, Page } from 'react-pdf';
+
+const PDFViewer = () => {
+  const [numPages, setNumPages] = useState(null);
+  const [pageNumber, setPageNumber] = useState(1);
+
+  const onDocumentLoadSuccess = ({ numPages }) => {
+    setNumPages(numPages);
+  };
+
+  const handlePageChange = (pageNumber) => {
+    setPageNumber(pageNumber);
+  };
+
+  return (
+    <div className="flex flex-col h-screen p-4">
+      <Document
+        file="path/to/your/pdf.pdf"
+        onLoadSuccess={onDocumentLoadSuccess}
+      >
+        <Page pageNumber={pageNumber} />
+      </Document>
+      <div className="flex justify-between mt-4">
+        <button
+          className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-l"
+          onClick={() => handlePageChange(pageNumber - 1)}
+        >
+          Prev
+        </button>
+        <p className="text-gray-800 font-bold py-2 px-4">
+          Page {pageNumber} of {numPages}
+        </p>
+        <button
+          className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-r"
+          onClick={() => handlePageChange(pageNumber + 1)}
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default PDFViewer;
